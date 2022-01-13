@@ -15,6 +15,7 @@
  * device and as a HID device with keyboard and mouse functions. If
  * you send "test" (terminated with a carriage return) to the serial
  * device, it will send the key sequence
+ * "led" to test the LED pattern
  * [Hold Alt]+[3xTab]+[Release Alt]
  * followed by moving the mouse pointer to the right. (This sequence
  * should initiate a task switch on most operating systems but will
@@ -39,7 +40,8 @@ Encoder rotary(PIN_ROTA, PIN_ROTB);
 long rotaryPosition = 0;  //Last position to keep track of changes
 
 //Display
-GxEPD2_290 display(/*CS=*/ PIN_CS, /*DC=*/ PIN_DC, /*RST=*/ PIN_RST, /*BUSY=*/ PIN_BUSY);
+//GxEPD2_290 display(/*CS=*/ PIN_CS, /*DC=*/ PIN_DC, /*RST=*/ PIN_RST, /*BUSY=*/ PIN_BUSY);
+GxEPD2_290_T94 display(/*CS=*/ PIN_CS, /*DC=*/ PIN_DC, /*RST=*/ PIN_RST, /*BUSY=*/ PIN_BUSY);
 
 //LEDs
 Adafruit_NeoPixel leds = Adafruit_NeoPixel(N_LED, PIN_LED, NEO_RGB + NEO_KHZ400);
@@ -259,8 +261,10 @@ void handleSerialInput() {
           Serial.println("Done");
         } else if (strncmp(serialBuffer, "test", 4) == 0) {
           runHIDTests();
+        } else if (strncmp(serialBuffer, "led", 3) == 0) {
+          ledTestPattern();
         } else {
-          Serial.println("Error: Unknown command. The hardware test code only supports the commands \"test\" and \"I\".");
+          Serial.println("Error: Unknown command. The hardware test code only supports the commands \"test\", \"led\" and \"I\".");
         }
         
       }

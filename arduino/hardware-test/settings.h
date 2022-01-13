@@ -1,10 +1,16 @@
 //Display
+//const byte PIN_DIN = 16;
+//const byte PIN_CLK = 15;
+//const byte PIN_CS = 19;
+//const byte PIN_DC = 18;
+//const byte PIN_RST = 14;
+//const byte PIN_BUSY = 10;
 const byte PIN_DIN = 16;
 const byte PIN_CLK = 15;
 const byte PIN_CS = 19;
 const byte PIN_DC = 18;
-const byte PIN_RST = 14;
-const byte PIN_BUSY = 10;
+const byte PIN_RST = 10;
+const byte PIN_BUSY = 14;
 
 //Display size
 const short DISP_W = 128; //Dispaly width
@@ -12,7 +18,7 @@ const short DISP_H = 296; //Display height
 
 //LEDs
 const byte PIN_LED = 20;
-const byte N_LED = 12; //Number of LEDs
+const byte N_LED = 10; //Number of LEDs
 
 //Rotary encoder
 const byte PIN_ROTA = 0;

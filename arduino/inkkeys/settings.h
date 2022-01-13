@@ -12,7 +12,7 @@ const short DISP_H = 296; //Display height
 
 //LEDs
 const byte PIN_LED = 20;
-const byte N_LED = 12; //Number of LEDs
+const byte N_LED = 10; //Number of LEDs
 
 //Rotary encoder
 const byte PIN_ROTA = 0;

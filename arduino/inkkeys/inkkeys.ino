@@ -7,7 +7,6 @@
  */
 
 #include "settings.h"           //Customize your settings in settings.h!
-
 #include "eventsequence.h"      //Structure and constants to define the sequence of events assigned to different buttons
 
 #include <HID-Project.h>        //HID (Keyboard/Mouse etc.)

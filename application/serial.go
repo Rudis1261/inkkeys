@@ -7,7 +7,7 @@ import (
 	"github.com/tarm/serial"
 )
 
-func main() {
+func Serial() {
 	config := &serial.Config{
 		Name:        "COM20",
 		Baud:        115200,

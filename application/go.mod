@@ -2,7 +2,10 @@ module github.com/rudis1261/inkkeys
 
 go 1.17
 
-require github.com/shirou/gopsutil v3.21.11+incompatible
+require (
+	github.com/shirou/gopsutil v3.21.11+incompatible
+	github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07
+)
 
 require (
 	github.com/go-ole/go-ole v1.2.6 // indirect

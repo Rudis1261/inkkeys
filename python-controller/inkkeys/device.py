@@ -26,7 +26,7 @@ class Device:
     ledState = None         #Current LED status, so we can animate them over time
     ledTime = None          #Last time LEDs were set
 
-    debug = False;
+    debug = True
 
     def connect(self, dev):
         print("Connecting to ", dev, ".")

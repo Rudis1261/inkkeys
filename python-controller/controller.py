@@ -1,4 +1,5 @@
-SERIALPORT = None #None = Auto-detect, to specify a specific serial port, you can set it to something like "/dev/ttyACM0" (Linux) or "COM1" (Windows)
+#!/usr/bin/env python
+SERIALPORT = "COM20" #None = Auto-detect, to specify a specific serial port, you can set it to something like "/dev/ttyACM0" (Linux) or "COM1" (Windows)
 VID = 0x1b4f      #USB Vendor ID for a Pro Micro
 PID = 0x9206      #USB Product ID for a Pro Micro
 DEBUG = False     #More output on the command line
@@ -28,7 +29,7 @@ print('I will try to stay connected. Press Ctrl+c to quit.')
 #the focus. The latter is a compiled regular expression pattern. Mode priority corresponds to the order in the
 #list, so the first mode with a matching process or active window will be activated.
 
-mqtt = InkkeysMqtt("192.168.2.5", DEBUG) #Set address to "None" if you do not want to use mqtt
+mqtt = None #InkkeysMqtt("192.168.2.5", DEBUG) #Set address to "None" if you do not want to use mqtt
 
 modes = [\
             {"mode": ModeOBS(), "process": "obs"}, \

@@ -121,12 +121,12 @@ func SayName(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Hello, I'm a machine and my name is [whatever]"))
 }
 
-func main() {
-	mux := http.NewServeMux()
+// func main() {
+// 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", SayName)
-	mux.HandleFunc("/gethwdata", GetHardwareData)
+// 	mux.HandleFunc("/", SayName)
+// 	mux.HandleFunc("/gethwdata", GetHardwareData)
 
-	http.ListenAndServe(":8080", mux)
+// 	http.ListenAndServe(":8080", mux)
 
-}
+// }

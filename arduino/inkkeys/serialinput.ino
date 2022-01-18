@@ -1,9 +1,9 @@
 /*
- * E-Ink adaptive macro keyboard
- * See https://there.oughta.be/a/macro-keyboard
- * 
- * This part is related to receiving and parsing incoming commands from serial
- */
+   E-Ink adaptive macro keyboard
+   See https://there.oughta.be/a/macro-keyboard
+
+   This part is related to receiving and parsing incoming commands from serial
+*/
 
 //Buffer to process serial input
 const int serialBufferSize = 256;
@@ -27,14 +27,14 @@ void printErrorWithIndex(const char * msg, byte i) {
 //Called to process a small part of the serialBuffer to parse a delay event, returns the number of characters handled
 byte processDelay(Event &event, byte i) {
   byte handled = 1;
-  if (i+handled >= serialBufferCount) {
-    printErrorWithIndex("No duration", i+handled);
+  if (i + handled >= serialBufferCount) {
+    printErrorWithIndex("No duration", i + handled);
     return 0;
   }
-  unsigned short t = atoi(serialBuffer+i+handled);
+  unsigned short t = atoi(serialBuffer + i + handled);
   event.deviceAndType = DEVICE_DELAY;
   event.keycodeOrDelay = t;
-  while (i+handled < serialBufferCount && serialBuffer[i+handled] >= '0' && serialBuffer[i+handled] <= '9')
+  while (i + handled < serialBufferCount && serialBuffer[i + handled] >= '0' && serialBuffer[i + handled] <= '9')
     handled++;
   return handled;
 }
@@ -42,19 +42,19 @@ byte processDelay(Event &event, byte i) {
 //Called to process a small part of the serialBuffer to parse a consumer event, returns the number of characters handled
 byte processConsumer(Event &event, byte i) {
   byte handled = 1;
-  if (i+handled >= serialBufferCount) {
-    printErrorWithIndex("No keycode", i+handled);
+  if (i + handled >= serialBufferCount) {
+    printErrorWithIndex("No keycode", i + handled);
     return 0;
   }
-  unsigned short code = atoi(serialBuffer+i+handled);
-  while (i+handled < serialBufferCount && serialBuffer[i+handled] >= '0' && serialBuffer[i+handled] <= '9')
+  unsigned short code = atoi(serialBuffer + i + handled);
+  while (i + handled < serialBufferCount && serialBuffer[i + handled] >= '0' && serialBuffer[i + handled] <= '9')
     handled++;
-    
-  if (i+handled >= serialBufferCount || serialBuffer[i+handled] == ' ') {
+
+  if (i + handled >= serialBufferCount || serialBuffer[i + handled] == ' ') {
     event.deviceAndType = DEVICE_CONSUMER | TYPE_STROKE;
     event.keycodeOrDelay = code;
   } else {
-    switch (serialBuffer[i+handled]) {
+    switch (serialBuffer[i + handled]) {
       case 'p':
         event.deviceAndType = DEVICE_CONSUMER | TYPE_PRESS;
         event.keycodeOrDelay = code;
@@ -64,7 +64,7 @@ byte processConsumer(Event &event, byte i) {
         event.keycodeOrDelay = code;
         break;
       default:
-        printErrorWithIndex("Type not supported", i+handled);
+        printErrorWithIndex("Type not supported", i + handled);
         return 0;
     }
     handled++;
@@ -75,19 +75,19 @@ byte processConsumer(Event &event, byte i) {
 //Called to process a small part of the serialBuffer to parse a keyboard event, returns the number of characters handled
 byte processKeyboard(Event &event, byte i) {
   byte handled = 1;
-  if (i+handled >= serialBufferCount) {
-    printErrorWithIndex("No keycode", i+handled);
+  if (i + handled >= serialBufferCount) {
+    printErrorWithIndex("No keycode", i + handled);
     return 0;
   }
-  unsigned short code = atoi(serialBuffer+i+handled);
-  while (i+handled < serialBufferCount && serialBuffer[i+handled] >= '0' && serialBuffer[i+handled] <= '9')
+  unsigned short code = atoi(serialBuffer + i + handled);
+  while (i + handled < serialBufferCount && serialBuffer[i + handled] >= '0' && serialBuffer[i + handled] <= '9')
     handled++;
-    
-  if (i+handled >= serialBufferCount || serialBuffer[i+handled] == ' ') {
+
+  if (i + handled >= serialBufferCount || serialBuffer[i + handled] == ' ') {
     event.deviceAndType = DEVICE_KEYBOARD | TYPE_STROKE;
     event.keycodeOrDelay = code;
   } else {
-    switch (serialBuffer[i+handled]) {
+    switch (serialBuffer[i + handled]) {
       case 'p':
         event.deviceAndType = DEVICE_KEYBOARD | TYPE_PRESS;
         event.keycodeOrDelay = code;
@@ -97,7 +97,7 @@ byte processKeyboard(Event &event, byte i) {
         event.keycodeOrDelay = code;
         break;
       default:
-        printErrorWithIndex("Type not supported", i+handled);
+        printErrorWithIndex("Type not supported", i + handled);
         return 0;
     }
     handled++;
@@ -108,12 +108,12 @@ byte processKeyboard(Event &event, byte i) {
 //Called to process a small part of the serialBuffer to parse a mouse event, returns the number of characters handled
 byte processMouse(Event &event, byte i) {
   byte handled = 1;
-  if (i+handled >= serialBufferCount) {
-    printErrorWithIndex("No keycode", i+handled);
+  if (i + handled >= serialBufferCount) {
+    printErrorWithIndex("No keycode", i + handled);
     return 0;
   }
   unsigned short code;
-  switch (serialBuffer[i+handled]) {
+  switch (serialBuffer[i + handled]) {
     case 'x':
       code = MOUSEAXIS_X << 8;
       handled++;
@@ -127,18 +127,18 @@ byte processMouse(Event &event, byte i) {
       handled++;
       break;
     default:
-      byte buttoncode = atoi(serialBuffer+i+handled);
+      byte buttoncode = atoi(serialBuffer + i + handled);
       code = (MOUSEAXIS_BUTTON << 8) | buttoncode;
-      while (i+handled < serialBufferCount && serialBuffer[i+handled] >= '0' && serialBuffer[i+handled] <= '9')
+      while (i + handled < serialBufferCount && serialBuffer[i + handled] >= '0' && serialBuffer[i + handled] <= '9')
         handled++;
       break;
   }
 
-  if (i+handled >= serialBufferCount || serialBuffer[i+handled] == ' ') {
+  if (i + handled >= serialBufferCount || serialBuffer[i + handled] == ' ') {
     event.deviceAndType = DEVICE_MOUSE | TYPE_STROKE;
     event.keycodeOrDelay = code;
   } else {
-    switch (serialBuffer[i+handled]) {
+    switch (serialBuffer[i + handled]) {
       case 'p':
         event.deviceAndType = DEVICE_MOUSE | TYPE_PRESS;
         event.keycodeOrDelay = code;
@@ -151,18 +151,18 @@ byte processMouse(Event &event, byte i) {
         break;
       case 'i':
         handled++;
-        if (i+handled >= serialBufferCount) {
-          printErrorWithIndex("Increment without value", i+handled);
+        if (i + handled >= serialBufferCount) {
+          printErrorWithIndex("Increment without value", i + handled);
           return 0;
         }
-        int8_t inc = atoi(serialBuffer+i+handled);
+        int8_t inc = atoi(serialBuffer + i + handled);
         event.deviceAndType = DEVICE_MOUSE | TYPE_INCREMENT;
         event.keycodeOrDelay = code | (inc & 0xff);
-        while (i+handled < serialBufferCount && ((serialBuffer[i+handled] >= '0' && serialBuffer[i+handled] <= '9') || serialBuffer[i+handled] <= '-'))
+        while (i + handled < serialBufferCount && ((serialBuffer[i + handled] >= '0' && serialBuffer[i + handled] <= '9') || serialBuffer[i + handled] <= '-'))
           handled++;
         break;
       default:
-        printErrorWithIndex("Type not supported", i+handled);
+        printErrorWithIndex("Type not supported", i + handled);
         return 0;
     }
     return handled;
@@ -175,7 +175,7 @@ void processAssignCommand() {
     printErrorWithIndex("Bad format", 1);
     return;
   }
-  
+
   byte key, pr;
   if (serialBuffer[2] >= '1' && serialBuffer[2] <= '9')
     key = serialBuffer[2] - '1';
@@ -185,7 +185,7 @@ void processAssignCommand() {
     printErrorWithIndex("Bad format", 2);
     return;
   }
-  switch(serialBuffer[3]) {
+  switch (serialBuffer[3]) {
     case 'p':
     case '+':
       pr = 0;
@@ -202,7 +202,7 @@ void processAssignCommand() {
     printErrorWithIndex("Bad format", 3);
     return;
   }
-  
+
   byte i = 4;
   byte event = 0;
   bool error = false;
@@ -212,7 +212,7 @@ void processAssignCommand() {
       return;
     }
     i++;
-    if (i+1 >= serialBufferCount) {
+    if (i + 1 >= serialBufferCount) {
       printErrorWithIndex("Sudden end", i);
       return;
     }
@@ -234,7 +234,7 @@ void processAssignCommand() {
       default:
         printErrorWithIndex("Unknown device", i);
     }
-    
+
     if (processed == 0)
       break;
     event++;
@@ -254,7 +254,7 @@ void processDisplayCommand() {
   imageDataTargetX = atoi(serialBuffer + i);
   while (i < serialBufferCount && serialBuffer[i] >= '0' && serialBuffer[i] <= '9')
     i++;
-  if (i+1 >= serialBufferCount || serialBuffer[i] != ' ') {
+  if (i + 1 >= serialBufferCount || serialBuffer[i] != ' ') {
     Serial.println("E: Bad format.");
     return;
   }
@@ -262,7 +262,7 @@ void processDisplayCommand() {
   imageDataTargetY = atoi(serialBuffer + i);
   while (i < serialBufferCount && serialBuffer[i] >= '0' && serialBuffer[i] <= '9')
     i++;
-  if (i+1 >= serialBufferCount || serialBuffer[i] != ' ') {
+  if (i + 1 >= serialBufferCount || serialBuffer[i] != ' ') {
     Serial.println("E: Bad format.");
     return;
   }
@@ -270,14 +270,39 @@ void processDisplayCommand() {
   imageDataTargetWidth = atoi(serialBuffer + i);
   while (i < serialBufferCount && serialBuffer[i] >= '0' && serialBuffer[i] <= '9')
     i++;
-  if (i+1 >= serialBufferCount || serialBuffer[i] != ' ') {
+  if (i + 1 >= serialBufferCount || serialBuffer[i] != ' ') {
     Serial.println("E: Bad format.");
     return;
   }
   i++;
   unsigned short imageDataTargetHeight = atoi(serialBuffer + i);
-  expectingImageData = imageDataTargetWidth*imageDataTargetHeight/8;
+  expectingImageData = imageDataTargetWidth * imageDataTargetHeight / 8;
   imageDataCurrentY = imageDataTargetY;
+}
+
+void printTestImage() {
+  // 'bug-fill', 40x40px
+  const unsigned char bitmap [] PROGMEM = {
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xff, 0xf7, 0xff, 0xff, 0xc7, 0xff, 0xe3, 0xff, 0xff, 
+    0xc6, 0x00, 0x63, 0xff, 0xff, 0xe0, 0x00, 0x07, 0xff, 0xff, 0xe0, 0x00, 0x07, 0xff, 0xff, 0xe0, 
+    0x00, 0x07, 0xff, 0xff, 0xc0, 0x00, 0x03, 0xff, 0xff, 0x80, 0x00, 0x01, 0xff, 0xff, 0x80, 0x00, 
+    0x01, 0xff, 0xff, 0x00, 0x00, 0x00, 0xff, 0xef, 0x00, 0x00, 0x00, 0xf7, 0xe7, 0x00, 0x00, 0x00, 
+    0xe7, 0xe7, 0x00, 0x00, 0x00, 0xe7, 0xe7, 0x00, 0x00, 0x00, 0xe7, 0xe1, 0xff, 0xff, 0xff, 0x87, 
+    0xf0, 0xff, 0xff, 0xff, 0x0f, 0xfe, 0x00, 0x3c, 0x00, 0x7f, 0xff, 0x00, 0x18, 0x00, 0xff, 0xfe, 
+    0x00, 0x18, 0x00, 0x7f, 0xe0, 0x00, 0x18, 0x00, 0x07, 0xe0, 0x00, 0x18, 0x00, 0x07, 0xf2, 0x00, 
+    0x18, 0x00, 0x4f, 0xff, 0x00, 0x18, 0x00, 0xff, 0xfe, 0x00, 0x18, 0x00, 0x7f, 0xf0, 0x00, 0x18, 
+    0x00, 0x0f, 0xe0, 0x00, 0x18, 0x00, 0x07, 0xe2, 0x00, 0x18, 0x00, 0x47, 0xe7, 0x00, 0x18, 0x00, 
+    0xe7, 0xe7, 0x00, 0x18, 0x00, 0xe7, 0xe7, 0x00, 0x18, 0x00, 0xe7, 0xff, 0x00, 0x18, 0x00, 0xff, 
+    0xff, 0x80, 0x18, 0x01, 0xff, 0xff, 0x80, 0x18, 0x01, 0xff, 0xff, 0xc0, 0x18, 0x03, 0xff, 0xff, 
+    0xc0, 0x18, 0x03, 0xff, 0xff, 0xe0, 0x18, 0x07, 0xff, 0xff, 0xf8, 0x18, 0x1f, 0xff, 0xff, 0xfc, 
+    0x18, 0x3f, 0xff, 0xff, 0xff, 0x18, 0xff, 0xff
+  };
+  display.writeScreenBuffer();
+  display.refresh();
+  display.writeScreenBufferAgain();
+  display.writeImage(bitmap, 40, 40, 40, 40, false, false, false);
+  display.refresh();
+  display.powerOff();
 }
 
 void processInfoCommand() {
@@ -299,12 +324,12 @@ void processInfoCommand() {
 }
 
 void processLEDCommand() {
-  if (serialBufferCount != 7*N_LED+1) {
+  if (serialBufferCount != 7 * N_LED + 1) {
     Serial.println("E: Bad format.");
     return;
   }
   for (byte i = 0; i < N_LED; i++) {
-    leds.setPixelColor(i, strtol(&serialBuffer[7*i+1], NULL, 16));
+    leds.setPixelColor(i, strtol(&serialBuffer[7 * i + 1], NULL, 16));
   }
   leds.show();
 }
@@ -349,6 +374,9 @@ void handleSerialInput() {
           case 'I': //Request device info
             processInfoCommand();
             break;
+          case 'P': //Print an example picture
+            printTestImage();
+            break;
           case 'L': //Set LEDs
             processLEDCommand();
             break;
@@ -360,14 +388,14 @@ void handleSerialInput() {
             Serial.println(serialBuffer);
             break;
         }
-        
+
       }
-      
-      //Command was handled. Reset buffer
+
+      // Command was handled. Reset buffer
       serialBufferCount = 0;
-      
+
     } else {
-      //Just a normal character or part of a transferred image. Store it in the buffer.
+      // Just a normal character or part of a transferred image. Store it in the buffer.
       if (serialBufferCount < serialBufferSize) {
         serialBuffer[serialBufferCount] = c;
         serialBufferCount++;

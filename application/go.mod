@@ -3,6 +3,7 @@ module github.com/rudis1261/inkkeys
 go 1.17
 
 require (
+	github.com/harrydb/go v0.0.0-20160105214235-0ff7a05d1aa4
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07
 )

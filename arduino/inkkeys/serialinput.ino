@@ -281,7 +281,6 @@ void processDisplayCommand() {
 }
 
 void printTestImage() {
-  // 'bug-fill', 40x40px
   const unsigned char bitmap [] PROGMEM = {
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xff, 0xf7, 0xff, 0xff, 0xc7, 0xff, 0xe3, 0xff, 0xff, 
     0xc6, 0x00, 0x63, 0xff, 0xff, 0xe0, 0x00, 0x07, 0xff, 0xff, 0xe0, 0x00, 0x07, 0xff, 0xff, 0xe0, 
@@ -297,11 +296,9 @@ void printTestImage() {
     0xc0, 0x18, 0x03, 0xff, 0xff, 0xe0, 0x18, 0x07, 0xff, 0xff, 0xf8, 0x18, 0x1f, 0xff, 0xff, 0xfc, 
     0x18, 0x3f, 0xff, 0xff, 0xff, 0x18, 0xff, 0xff
   };
-  display.writeScreenBuffer();
-  display.refresh();
-  display.writeScreenBufferAgain();
-  display.writeImage(bitmap, 40, 40, 40, 40, false, false, false);
-  display.refresh();
+
+  display.writeImage(bitmap, 40, 120, 40, 40, false, false, false);
+  display.refresh(true);
   display.powerOff();
 }
 
@@ -374,6 +371,9 @@ void handleSerialInput() {
           case 'I': //Request device info
             processInfoCommand();
             break;
+//          case 'S': //Print the logo to the screen
+//            printLogo();
+//            break;
           case 'P': //Print an example picture
             printTestImage();
             break;
